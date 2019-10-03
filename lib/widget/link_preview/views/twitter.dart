@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../link_preview.dart';
-import '../model/web_page_details.dart';
-
-class TwitterLinkPreview extends LinkPreview {
-  @override
-  Widget buildWidget(WebPageDetails webPageDetails) => TwitterView(
-        imageUrl: webPageDetails.imageUrl,
-        title: webPageDetails.title.split(':')[0],
-        url: webPageDetails.url,
-        description: webPageDetails.description,
-      );
-}
-
 class TwitterView extends StatelessWidget {
   final String imageUrl;
   final String title;

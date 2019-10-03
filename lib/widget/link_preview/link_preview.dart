@@ -4,38 +4,57 @@ import 'package:link_widget/widget/link_preview/views/index.dart';
 
 import 'model/web_page_details.dart';
 
-enum Style { LINKEDIN, SKYPE, TELEGRAM, TWITTER, WHATSAPP }
+class LinkPreviewWidget extends StatelessWidget {
+  final String url;
+  final Widget Function(WebPageDetails) builder;
 
-const DEFAULT_STYLE = Style.TELEGRAM;
+  const LinkPreviewWidget({Key key, this.url, this.builder}) : super(key: key);
 
-abstract class LinkPreview {
-  static of(url, {Style style = DEFAULT_STYLE}) {
-    switch (style) {
-      case Style.LINKEDIN:
-        return LinkedInLinkPreview().render(url);
-      case Style.SKYPE:
-        return SkypeLinkPreview().render(url);
-      case Style.TELEGRAM:
-        return TelegramLinkPreview().render(url);
-      case Style.TWITTER:
-        return TwitterLinkPreview().render(url);
-      case Style.WHATSAPP:
-        return WhatsAppLinkPreview().render(url);
-    }
-  }
+  static var linkedInBuilder = (WebPageDetails webPageDetails) => LinkedInView(
+        imageUrl: webPageDetails.imageUrl,
+        title: webPageDetails.title.split(':')[0],
+        url: webPageDetails.url,
+        description: webPageDetails.description,
+      );
 
-  WebScraper _webScraper = HtmlWebScraper();
+  static var skypeBuilder = (WebPageDetails webPageDetails) => SkypeView(
+        imageUrl: webPageDetails.imageUrl,
+        title: webPageDetails.title.split(':')[0],
+        url: webPageDetails.url,
+        description: webPageDetails.description,
+        favUrl: webPageDetails.favicon,
+      );
 
-  Widget render(String url) {
+  static var telegramBuilder = (WebPageDetails webPageDetails) => TelegramView(
+        imageUrl: webPageDetails.imageUrl,
+        title: webPageDetails.title.split(':')[0],
+        url: webPageDetails.url,
+        description: webPageDetails.description,
+      );
+
+  static var twitterBuilder = (WebPageDetails webPageDetails) => TwitterView(
+        imageUrl: webPageDetails.imageUrl,
+        title: webPageDetails.title.split(':')[0],
+        url: webPageDetails.url,
+        description: webPageDetails.description,
+      );
+
+  static var whatsAppBuilder = (WebPageDetails webPageDetails) => WhatsAppView(
+        imageUrl: webPageDetails.imageUrl,
+        title: webPageDetails.title.split(':')[0],
+        url: webPageDetails.url,
+        description: webPageDetails.description,
+      );
+
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _webScraper.getPageDetails(url),
+      future: HtmlWebScraper().getPageDetails(url),
       builder: (context, snapshot) {
         return snapshot.connectionState == ConnectionState.done
-            ? snapshot.hasError ? Container() : buildWidget(snapshot.data)
+            ? snapshot.hasError ? Container() : builder(snapshot.data)
             : Container();
       },
     );
   }
-
-  Widget buildWidget(WebPageDetails webPageDetails);
 }

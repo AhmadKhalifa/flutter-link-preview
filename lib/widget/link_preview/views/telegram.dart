@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../link_preview.dart';
-import '../model/web_page_details.dart';
-
-class TelegramLinkPreview extends LinkPreview {
-  @override
-  Widget buildWidget(WebPageDetails webPageDetails) => TelegramView(
-        imageUrl: webPageDetails.imageUrl,
-        title: webPageDetails.title.split(':')[0],
-        url: webPageDetails.url,
-        description: webPageDetails.description,
-      );
-}
-
 class TelegramView extends StatelessWidget {
   final String url;
   final String imageUrl;

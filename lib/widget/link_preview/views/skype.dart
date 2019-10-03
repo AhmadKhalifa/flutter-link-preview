@@ -1,19 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../link_preview.dart';
-import '../model/web_page_details.dart';
-
-class SkypeLinkPreview extends LinkPreview {
-  @override
-  Widget buildWidget(WebPageDetails webPageDetails) => SkypeView(
-        imageUrl: webPageDetails.imageUrl,
-        title: webPageDetails.title.split(':')[0],
-        url: webPageDetails.url,
-        description: webPageDetails.description,
-        favUrl: webPageDetails.favicon,
-      );
-}
-
 class SkypeView extends StatelessWidget {
   final String imageUrl;
   final String title;
